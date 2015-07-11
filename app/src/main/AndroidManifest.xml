@@ -11,14 +11,17 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="charistas.actibit.auth.LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="charistas.actibit.auth.AuthenticationActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_authentication" >
         </activity>
         <activity
             android:name="charistas.actibit.PickActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +30,7 @@
         </activity>
         <activity
             android:name="charistas.actibit.LogFitBitActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_log_fit_bit" >
         </activity>
     </application>

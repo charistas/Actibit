@@ -36,7 +36,7 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Toast.makeText(this, "LoginActivity", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "LoginActivity", Toast.LENGTH_SHORT).show();
 
         startActivityForResult(new Intent(this, AuthenticationActivity.class), GET_PIN_REQUEST);
     }

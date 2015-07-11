@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import charistas.actibit.auth.LoginActivity;
 
@@ -25,7 +26,7 @@ public class PickActivity extends ActionBarActivity {
         setContentView(R.layout.activity_pick);
         setTitle(R.string.title_activity_pick);
 
-        Toast.makeText(this, "PickActivity", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "PickActivity", Toast.LENGTH_SHORT).show();
 
         SharedPreferences prefs = getSharedPreferences("charistas.actibit", MODE_PRIVATE);
         String access_token = prefs.getString("ACCESS_TOKEN", null);
@@ -33,10 +34,10 @@ public class PickActivity extends ActionBarActivity {
         String access_raw_response = prefs.getString("ACCESS_RAW_RESPONSE", null);
 
         if (access_token == null) {
-            Toast.makeText(this, "Login needed...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sign in needed!", Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(this, "Access Token: " +access_token, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Access Token: " +access_token, Toast.LENGTH_LONG).show();
         }
 
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
@@ -45,7 +46,7 @@ public class PickActivity extends ActionBarActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        FitBitActivityAdapter ca = new FitBitActivityAdapter(createList(2));
+        FitBitActivityAdapter ca = new FitBitActivityAdapter(this, createList());
         recList.setAdapter(ca);
     }
 
@@ -54,23 +55,15 @@ public class PickActivity extends ActionBarActivity {
         view.getContext().startActivity(intent);
     }
 
-    private List<FitBitActivityInfo> createList(int size) {
-
+    private List<FitBitActivityInfo> createList() {
+        Map<String, String> activities = FitBitActivityInfo.getActivityIDs();
         List<FitBitActivityInfo> result = new ArrayList<>();
-        for (int i = 1; i <= size; i++) {
+
+        for (String key : activities.keySet()) {
             FitBitActivityInfo ci = new FitBitActivityInfo();
-            if (i == 1) {
-                ci.name = "Tennis";
-            }
-            else if (i == 2) {
-                ci.name = "Cycling";
-            }
-            else {
-                ci.name = "null";
-            }
+            ci.name = key;
             result.add(ci);
         }
-
         return result;
     }
 
