@@ -9,15 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import charistas.actibit.auth.LoginActivity;
-
+import charistas.actibit.auth.AuthenticationActivity;
 
 public class PickActivity extends ActionBarActivity {
     public static TextView authStatus;
@@ -37,11 +35,11 @@ public class PickActivity extends ActionBarActivity {
 
         authStatus = (TextView)findViewById(R.id.authStatus);
         if (access_token == null) {
-            authStatus.setText("Auth status: Not OK");
+            setAuthStatus(false);
             //Toast.makeText(this, "Sign in needed!", Toast.LENGTH_LONG).show();
         }
         else {
-            authStatus.setText("Auth status: OK");
+            setAuthStatus(true);
             //Toast.makeText(this, "Access Token: " +access_token, Toast.LENGTH_LONG).show();
         }
 
@@ -55,8 +53,17 @@ public class PickActivity extends ActionBarActivity {
         recList.setAdapter(ca);
     }
 
+    public  static void setAuthStatus(boolean enabled) {
+        if (enabled) {
+            authStatus.setText("Auth status: OK");
+        }
+        else {
+            authStatus.setText("Auth status: Not OK");
+        }
+    }
+
     public void buttonConnectClicked (View view) {
-        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+        Intent intent = new Intent(view.getContext(), AuthenticationActivity.class);
         view.getContext().startActivity(intent);
     }
 

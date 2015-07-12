@@ -1,19 +1,28 @@
 package charistas.actibit.auth;
 import org.scribe.builder.ServiceBuilder;
+import org.scribe.model.Token;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
+import charistas.actibit.PickActivity;
 import charistas.actibit.R;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class AuthenticationActivity extends Activity {
     public final static String CONSUMER_KEY = "47481d0855aa4f02d5e238d5b2d33581";
     public  final static String CONSUMER_SECRET = "1ef1d9d56153d9aa6f7d1d94fa5bb786";
+    static OAuthService service;
+    static Token requestToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +39,13 @@ public class AuthenticationActivity extends Activity {
             }
         });
 
-        LoginActivity.service = new ServiceBuilder().provider(FitbitApi.class).apiKey(CONSUMER_KEY).apiSecret(CONSUMER_SECRET).build();
+        service = new ServiceBuilder().provider(FitbitApi.class).apiKey(CONSUMER_KEY).apiSecret(CONSUMER_SECRET).build();
 
         // Network operation shouldn't run on main thread
         new Thread(new Runnable() {
             public void run() {
-                LoginActivity.requestToken = LoginActivity.service.getRequestToken();
-                final String authURL = LoginActivity.service.getAuthorizationUrl(LoginActivity.requestToken);
+                requestToken = service.getRequestToken();
+                final String authURL = service.getAuthorizationUrl(requestToken);
 
                 // Webview navigation should run on main thread
                 webview.post(new Runnable() {
@@ -69,9 +78,24 @@ public class AuthenticationActivity extends Activity {
 
             if(first!=-1){
                 final String pin = html.substring(first+divStr.length(),second);
-                Intent intent = new Intent();
-                intent.putExtra("PIN",pin);
-                setResult(RESULT_OK,intent);
+                final Verifier verifier = new Verifier(pin);
+                new Thread(new Runnable() {
+                    public void run() {
+                        final Token accessToken = service.getAccessToken(requestToken, verifier);
+                        SharedPreferences.Editor editor = getSharedPreferences("charistas.actibit", MODE_PRIVATE).edit();
+                        editor.putString("ACCESS_TOKEN", accessToken.getToken());
+                        editor.putString("ACCESS_SECRET", accessToken.getSecret());
+                        editor.putString("ACCESS_RAW_RESPONSE", accessToken.getRawResponse());
+                        editor.commit();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                PickActivity.setAuthStatus(true);
+                            }
+                        });
+                    }
+                }).start();
                 finish();
             }
         }
