@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,9 +96,29 @@ public class PickActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "Not yet implemented.", Toast.LENGTH_LONG).show();
             return true;
         }
-
+        else if (id == R.id.action_feedback) {
+            sendFeedback();
+            return true;
+        }
+        else if (id == R.id.action_sign_out) {
+            Toast.makeText(this, "Not yet implemented.", Toast.LENGTH_LONG).show();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void sendFeedback() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"haritasi@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Feedback on ActiBit app");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -1,6 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="charistas.actibit.PickActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="charistas.actibit.PickActivity">
+
+    <item
+        android:id="@+id/action_feedback"
+        android:title="@string/action_feedback"
+        android:orderInCategory="1"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:title="@string/action_sign_out"
+        android:icon="@mipmap/ic_face_white_48dp"
+        android:orderInCategory="3"
+        app:showAsAction="ifRoom" />
 </menu>
