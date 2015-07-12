@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.SharedPreferences;
 
@@ -19,6 +20,7 @@ import charistas.actibit.auth.LoginActivity;
 
 
 public class PickActivity extends ActionBarActivity {
+    public static TextView authStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +35,14 @@ public class PickActivity extends ActionBarActivity {
         String access_secret = prefs.getString("ACCESS_SECRET", null);
         String access_raw_response = prefs.getString("ACCESS_RAW_RESPONSE", null);
 
+        authStatus = (TextView)findViewById(R.id.authStatus);
         if (access_token == null) {
-            Toast.makeText(this, "Sign in needed!", Toast.LENGTH_LONG).show();
+            authStatus.setText("Auth status: Not OK");
+            //Toast.makeText(this, "Sign in needed!", Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(this, "Access Token: " +access_token, Toast.LENGTH_LONG).show();
+            authStatus.setText("Auth status: OK");
+            //Toast.makeText(this, "Access Token: " +access_token, Toast.LENGTH_LONG).show();
         }
 
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
@@ -200,14 +201,27 @@ public class LogFitBitActivity extends ActionBarActivity implements View.OnClick
                 }
 
                 service.signRequest(accessToken, request);
-                request.send();
+                final Response response = request.send();
 
                 // Visual output should run on main thread
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        // TODO: Check whether it was successfully sent or not
-                        Toast.makeText(context, "Sent!", Toast.LENGTH_SHORT).show();
+                        if ( (response.getCode() == 201) || (response.getCode() == 200) ) {
+                            Toast.makeText(context, "Sent!", Toast.LENGTH_LONG).show();
+                        }
+                        else if (response.getCode() == 401) {
+                            Toast.makeText(context, "Authentication needed!", Toast.LENGTH_LONG).show();
+                        }
+                        else if (response.getCode() == 500) {
+                            Toast.makeText(context, "Something is wrong at FitBit! Try your request later.", Toast.LENGTH_LONG).show();
+                        }
+                        else if (response.getCode()  == 502) {
+                            Toast.makeText(context, "FitBit will be back soon. Maintenance!", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(context, "Unknown error. Message: " +response.getMessage() +" | Code: " +response.getCode(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
                 finish();

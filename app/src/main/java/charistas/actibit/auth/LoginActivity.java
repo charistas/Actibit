@@ -21,15 +21,13 @@ import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
+import charistas.actibit.PickActivity;
 import charistas.actibit.R;
 
 public class LoginActivity extends ActionBarActivity {
     static OAuthService service;
     static Token requestToken;
     static final int GET_PIN_REQUEST = 101;
-
-    //String value = null;
-    //String [] parameters = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,63 +60,14 @@ public class LoginActivity extends ActionBarActivity {
                     @Override
                     public void run() {
                         output.setText("Access Token: " +accessToken.getToken());
+                        PickActivity.authStatus.setText("Auth status: OK");
                     }
                 });
                 finish();
             }
         }).start();
     }
-/*
-    public void btnPostData(View view) {
-        EditText PIN = (EditText) findViewById(R.id.PIN);
-        String gotPIN = PIN.getText().toString();
-        final Verifier verifier = new Verifier(gotPIN);
 
-        // Network operation shouldn't run on main thread
-        new Thread(new Runnable() {
-            public void run() {
-                Token accessToken = service.getAccessToken(requestToken, verifier);
-
-                OAuthRequest request = new OAuthRequest(Verb.POST, "https://api.fitbit.com/1/user/-/activities.json");
-                if (value.equals("Tennis")) {
-                    request.addBodyParameter("activityId", LogFitBitActivity.TENNIS_ID);
-                    for (int i = 0; i < parameters.length; i++) {
-                        request.addBodyParameter(LogFitBitActivity.TENNIS_PARAMETERS[i], parameters[i]);
-                    }
-                }
-                else if (value.equals("Cycling")) {
-                    request.addBodyParameter("activityId", LogFitBitActivity.CYCLING_ID);
-                    for (int i = 0; i < parameters.length; i++) {
-                        request.addBodyParameter(LogFitBitActivity.CYCLING_PARAMETERS[i], parameters[i]);
-                    }
-                }
-
-                 // The following is to POST activity:https://wiki.fitbit.com/display/API/API-Log-Activity
-                //AuthRequest request = new OAuthRequest(Verb.POST, "https://api.fitbit.com/1/user/-/activities.json");
-                //request.addBodyParameter("activityId", "15675");
-                //request.addBodyParameter("startTime", "7:30");
-                //request.addBodyParameter("durationMillis", "1800000");
-                //request.addBodyParameter("date", "2015-07-06");
-
-                 // The following is to GET example data:
-                 // OAuthRequest request = new OAuthRequest(Verb.GET, "https://api.fitbit.com/1/user/-/profile.json");
-
-                service.signRequest(accessToken, request);
-
-                final Response response = request.send();
-                final TextView output = (TextView) findViewById(R.id.output);
-
-                // Visual output should run on main thread
-                output.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        output.setText(response.getBody());
-                    }
-                });
-            }
-        }).start();
-    }
-*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
