@@ -3,13 +3,14 @@ package charistas.actibit;
 import android.content.res.Resources;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FitBitActivityInfo {
     protected String name;
 
     public static Map getActivityIDs() {
-        Map ids = new HashMap();
+        Map ids = new LinkedHashMap();
 
         ids.put("Tennis", "15675");
         ids.put("Cycling", "90001");
@@ -26,7 +27,7 @@ public class FitBitActivityInfo {
     }
 
     public static Map getDrawables(Resources resources) {
-        Map drawables = new HashMap();
+        Map drawables = new LinkedHashMap();
 
         drawables.put("Tennis", resources.getIdentifier("tennis", "drawable", "charistas.actibit"));
         drawables.put("Cycling", resources.getIdentifier("cycling", "drawable", "charistas.actibit"));
@@ -43,7 +44,7 @@ public class FitBitActivityInfo {
     }
 
     public static Map getActivityParameters() {
-        Map parameters = new HashMap();
+        Map parameters = new LinkedHashMap();
 
         parameters.put("Tennis", new String[]{"date", "startTime", "durationMillis"});
         parameters.put("Cycling", new String[]{"date", "startTime", "durationMillis", "distance"});

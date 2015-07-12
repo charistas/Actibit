@@ -12,5 +12,6 @@
         android:layout_height="match_parent"
         android:id="@+id/myLinearLayout"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"></LinearLayout>
+        android:layout_centerHorizontal="true">
+    </LinearLayout>
 </RelativeLayout>

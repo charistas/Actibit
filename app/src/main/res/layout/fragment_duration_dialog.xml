@@ -1,0 +1,51 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="charistas.tichutracker.ScoreDialogFragment">
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hourPicker"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/colon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/colon"
+        android:text=":"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/minutePicker"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/colon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Hours"
+        android:id="@+id/hoursTextView"
+        android:layout_above="@+id/hourPicker"
+        android:layout_alignLeft="@+id/hourPicker"
+        android:layout_alignRight="@+id/hourPicker"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Minutes"
+        android:id="@+id/minutesTextView"
+        android:layout_above="@+id/minutePicker"
+        android:layout_alignLeft="@+id/minutePicker"
+        android:layout_alignRight="@+id/minutePicker"
+        android:gravity="center" />
+</RelativeLayout>

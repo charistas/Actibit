@@ -8,4 +8,7 @@
     <string name="title_activity_pick">Pick An Activity</string>
     <string name="title_activity_log_fit_bit">Log Activity</string>
     <string name="buttonConnect">Sign In</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
