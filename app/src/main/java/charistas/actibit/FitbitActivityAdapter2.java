@@ -8,51 +8,50 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
 
-public class FitBitActivityAdapter extends RecyclerView.Adapter<FitBitActivityAdapter.FitBitActivityViewHolder> {
+public class FitbitActivityAdapter2 extends RecyclerView.Adapter<FitbitActivityAdapter2.FitbitActivityViewHolder> {
     private static MyClickListener myClickListener;
-    private List<FitBitActivityInfo> fitBitActivityList;
+    private List<FitbitActivityInfo2> fitbitActivityList;
     private Context context;
 
-    public FitBitActivityAdapter(Context context, List<FitBitActivityInfo> fitBitActivityList) {
-        this.fitBitActivityList = fitBitActivityList;
+    public FitbitActivityAdapter2(Context context, List<FitbitActivityInfo2> fitBitActivityList) {
+        this.fitbitActivityList = fitBitActivityList;
         this.context = context;
     }
 
     @Override
     public int getItemCount() {
-        return fitBitActivityList.size();
+        return fitbitActivityList.size();
     }
 
     @Override
-    public void onBindViewHolder(FitBitActivityViewHolder contactViewHolder, int i) {
-        FitBitActivityInfo fitBitActivity = fitBitActivityList.get(i);
-        contactViewHolder.name.setText(fitBitActivity.name);
+    public void onBindViewHolder(FitbitActivityViewHolder contactViewHolder, int i) {
+        FitbitActivityInfo2 fitbitActivity = fitbitActivityList.get(i);
+        contactViewHolder.name.setText(fitbitActivity.name);
 
-        Map<String, Integer> drawables = FitBitActivityInfo.getDrawables(context.getResources());
-        contactViewHolder.image.setImageResource(drawables.get(fitBitActivity.name));
+        Map<String, Integer> drawables = FitbitActivityInfo2.getDrawables(context.getResources());
+        contactViewHolder.image.setImageResource(drawables.get(fitbitActivity.name));
     }
 
     @Override
-    public FitBitActivityViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
+    public FitbitActivityViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.card_layout, viewGroup, false);
 
-        return new FitBitActivityViewHolder(itemView);
+        return new FitbitActivityViewHolder(itemView);
     }
 
-    public static class FitBitActivityViewHolder extends RecyclerView.ViewHolder implements View
+    public static class FitbitActivityViewHolder extends RecyclerView.ViewHolder implements View
             .OnClickListener {
 
         protected TextView name;
         protected ImageView image;
 
-        public FitBitActivityViewHolder(View v) {
+        public FitbitActivityViewHolder(View v) {
             super(v);
 
             name =  (TextView)v.findViewById(R.id.txtName);
@@ -64,8 +63,8 @@ public class FitBitActivityAdapter extends RecyclerView.Adapter<FitBitActivityAd
         @Override
         public void onClick(View v) {
             //Toast.makeText(v.getContext(), name.getText() +" clicked", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(v.getContext(), LogFitBitActivity.class);
-            intent.putExtra("FitBitActivityName", name.getText());
+            Intent intent = new Intent(v.getContext(), LogFitbitActivity2.class);
+            intent.putExtra("FitbitActivityName", name.getText());
             v.getContext().startActivity(intent);
         }
     }

@@ -16,9 +16,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_sign_out"
-        android:title="@string/action_sign_out"
-        android:icon="@mipmap/ic_face_white_48dp"
+        android:id="@+id/action_sign_in"
+        android:title="@string/action_sign_in"
         android:orderInCategory="3"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>

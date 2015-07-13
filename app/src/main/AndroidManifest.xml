@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="charistas.actibit.LogFitBitActivity"
+            android:name=".LogFitbitActivity2"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_log_fit_bit" >
         </activity>

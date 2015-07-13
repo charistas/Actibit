@@ -40,7 +40,7 @@ import java.util.Map;
 import charistas.actibit.auth.AuthenticationActivity;
 import charistas.actibit.auth.FitbitApi;
 
-public class LogFitBitActivity extends ActionBarActivity implements View.OnClickListener, SetDurationDialogFragment.OnCompleteListener {
+public class LogFitbitActivity2 extends ActionBarActivity implements View.OnClickListener, SetDurationDialogFragment.OnCompleteListener {
     TextView [] myTextViews = null;
     EditText[] myEditTexts = null;
 
@@ -73,17 +73,17 @@ public class LogFitBitActivity extends ActionBarActivity implements View.OnClick
         durationFormatter = new SimpleDateFormat("kk 'hours' 'and' mm 'minutes'", Locale.US);
 
         context = this;
-        //Toast.makeText(this, "LogFitBitActivity", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "LogFitbitActivity2", Toast.LENGTH_SHORT).show();
 
         Bundle extras = getIntent().getExtras();
         String value = null;
         if (extras != null) {
-            value = extras.getString("FitBitActivityName");
+            value = extras.getString("FitbitActivityName");
             //Toast.makeText(this, "Received: " + value, Toast.LENGTH_SHORT).show();
         }
 
-        Map<String, String> ids = FitBitActivityInfo.getActivityIDs();
-        Map<String, String []> parameters = FitBitActivityInfo.getActivityParameters();
+        Map<String, String> ids = FitbitActivityInfo2.getActivityIDs();
+        Map<String, String []> parameters = FitbitActivityInfo2.getActivityParameters();
 
         String [] curParameters = parameters.get(value);
         int curLen = curParameters.length;
@@ -163,8 +163,8 @@ public class LogFitBitActivity extends ActionBarActivity implements View.OnClick
         String ACCESS_RAW_RESPONSE = prefs.getString("ACCESS_RAW_RESPONSE", null);
         final Token accessToken = new Token(ACCESS_TOKEN, ACCESS_SECRET, ACCESS_RAW_RESPONSE);
 
-        final Map<String, String> ids = FitBitActivityInfo.getActivityIDs();
-        final Map<String, String[]> parameters = FitBitActivityInfo.getActivityParameters();
+        final Map<String, String> ids = FitbitActivityInfo2.getActivityIDs();
+        final Map<String, String[]> parameters = FitbitActivityInfo2.getActivityParameters();
 
         final Handler handler = new Handler();
         // Network operation shouldn't run on main thread
@@ -214,10 +214,10 @@ public class LogFitBitActivity extends ActionBarActivity implements View.OnClick
                             Toast.makeText(context, "Authentication needed!", Toast.LENGTH_LONG).show();
                         }
                         else if (response.getCode() == 500) {
-                            Toast.makeText(context, "Something is wrong at FitBit! Try your request later.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Something is wrong at Fitbit! Try your request later.", Toast.LENGTH_LONG).show();
                         }
                         else if (response.getCode()  == 502) {
-                            Toast.makeText(context, "FitBit will be back soon. Maintenance!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Fitbit will be back soon. Maintenance!", Toast.LENGTH_LONG).show();
                         }
                         else {
                             Toast.makeText(context, "Unknown error. Message: " +response.getMessage() +" | Code: " +response.getCode(), Toast.LENGTH_LONG).show();

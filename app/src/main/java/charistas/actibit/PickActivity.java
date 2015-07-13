@@ -1,5 +1,7 @@
 package charistas.actibit;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,8 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
@@ -19,7 +19,8 @@ import java.util.Map;
 import charistas.actibit.auth.AuthenticationActivity;
 
 public class PickActivity extends ActionBarActivity {
-    public static TextView authStatus;
+    private static Menu menu = null;
+    private static boolean signedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,21 +28,32 @@ public class PickActivity extends ActionBarActivity {
         setContentView(R.layout.activity_pick);
         setTitle(R.string.title_activity_pick);
 
-        //Toast.makeText(this, "PickActivity", Toast.LENGTH_SHORT).show();
-
         SharedPreferences prefs = getSharedPreferences("charistas.actibit", MODE_PRIVATE);
         String access_token = prefs.getString("ACCESS_TOKEN", null);
-        String access_secret = prefs.getString("ACCESS_SECRET", null);
-        String access_raw_response = prefs.getString("ACCESS_RAW_RESPONSE", null);
-
-        authStatus = (TextView)findViewById(R.id.authStatus);
         if (access_token == null) {
-            setAuthStatus(false);
-            //Toast.makeText(this, "Sign in needed!", Toast.LENGTH_LONG).show();
+            setSignedInStatus(false);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Let's get you sign in with your Fitbit account.")
+                    .setCancelable(false)
+                    .setPositiveButton("Sign In", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Start authentication process
+                            Intent intent = new Intent(PickActivity.this, AuthenticationActivity.class);
+                            PickActivity.this.startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Let the user know how he can sign in later
+                            Toast.makeText(PickActivity.this, "You may sign in later via the menu.", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
         else {
-            setAuthStatus(true);
-            //Toast.makeText(this, "Access Token: " +access_token, Toast.LENGTH_LONG).show();
+            setSignedInStatus(true);
         }
 
         RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
@@ -50,30 +62,16 @@ public class PickActivity extends ActionBarActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        FitBitActivityAdapter ca = new FitBitActivityAdapter(this, createList());
+        FitbitActivityAdapter2 ca = new FitbitActivityAdapter2(this, createList());
         recList.setAdapter(ca);
     }
 
-    public  static void setAuthStatus(boolean enabled) {
-        if (enabled) {
-            authStatus.setText("Auth status: OK");
-        }
-        else {
-            authStatus.setText("Auth status: Not OK");
-        }
-    }
-
-    public void buttonConnectClicked (View view) {
-        Intent intent = new Intent(view.getContext(), AuthenticationActivity.class);
-        view.getContext().startActivity(intent);
-    }
-
-    private List<FitBitActivityInfo> createList() {
-        Map<String, String> activities = FitBitActivityInfo.getActivityIDs();
-        List<FitBitActivityInfo> result = new ArrayList<>();
+    private List<FitbitActivityInfo2> createList() {
+        Map<String, String> activities = FitbitActivityInfo2.getActivityIDs();
+        List<FitbitActivityInfo2> result = new ArrayList<>();
 
         for (String key : activities.keySet()) {
-            FitBitActivityInfo ci = new FitBitActivityInfo();
+            FitbitActivityInfo2 ci = new FitbitActivityInfo2();
             ci.name = key;
             result.add(ci);
         }
@@ -83,6 +81,7 @@ public class PickActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_pick, menu);
         return true;
     }
@@ -103,8 +102,20 @@ public class PickActivity extends ActionBarActivity {
             sendFeedback();
             return true;
         }
-        else if (id == R.id.action_sign_out) {
-            Toast.makeText(this, "Not yet implemented.", Toast.LENGTH_LONG).show();
+        else if (id == R.id.action_sign_in) {
+            if (signedIn) {
+                // Sign Out
+                setSignedInStatus(false);
+                SharedPreferences.Editor editor = getSharedPreferences("charistas.actibit", MODE_PRIVATE).edit();
+                editor.clear();
+                editor.commit();
+                Toast.makeText(this, "You may sign in later via the menu.", Toast.LENGTH_LONG).show();
+            }
+            else {
+                // Sign In
+                Intent intent = new Intent(PickActivity.this, AuthenticationActivity.class);
+                PickActivity.this.startActivity(intent);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -119,6 +130,19 @@ public class PickActivity extends ActionBarActivity {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static void setSignedInStatus(boolean status) {
+        PickActivity.signedIn = status;
+
+        if (menu != null) {
+            MenuItem item = menu.findItem(R.id.action_sign_in);
+            if (status) {
+                item.setTitle("Sign Out");
+            } else {
+                item.setTitle("Sign In");
+            }
         }
     }
 }

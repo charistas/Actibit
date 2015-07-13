@@ -6,13 +6,12 @@ import org.scribe.oauth.OAuthService;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import charistas.actibit.PickActivity;
 import charistas.actibit.R;
@@ -23,10 +22,12 @@ public class AuthenticationActivity extends Activity {
     public  final static String CONSUMER_SECRET = "1ef1d9d56153d9aa6f7d1d94fa5bb786";
     static OAuthService service;
     static Token requestToken;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_authentication);
         final WebView webview = (WebView) findViewById(R.id.webview);
         webview.getSettings().setJavaScriptEnabled(true);
@@ -91,7 +92,9 @@ public class AuthenticationActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                PickActivity.setAuthStatus(true);
+                                Toast.makeText(context, "Signed in!", Toast.LENGTH_SHORT).show();
+                                PickActivity.setSignedInStatus(true);
+                                //PickActivity.setAuthStatus(true);
                             }
                         });
                     }

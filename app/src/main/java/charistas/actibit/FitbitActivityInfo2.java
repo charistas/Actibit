@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class FitBitActivityInfo {
+public class FitbitActivityInfo2 {
     protected String name;
 
     public static Map getActivityIDs() {
