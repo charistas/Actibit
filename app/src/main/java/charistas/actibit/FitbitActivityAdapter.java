@@ -12,12 +12,12 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Map;
 
-public class FitbitActivityAdapter2 extends RecyclerView.Adapter<FitbitActivityAdapter2.FitbitActivityViewHolder> {
+public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAdapter.FitbitActivityViewHolder> {
     private static MyClickListener myClickListener;
-    private List<FitbitActivityInfo2> fitbitActivityList;
+    private List<FitbitActivityInfo> fitbitActivityList;
     private Context context;
 
-    public FitbitActivityAdapter2(Context context, List<FitbitActivityInfo2> fitBitActivityList) {
+    public FitbitActivityAdapter(Context context, List<FitbitActivityInfo> fitBitActivityList) {
         this.fitbitActivityList = fitBitActivityList;
         this.context = context;
     }
@@ -29,10 +29,10 @@ public class FitbitActivityAdapter2 extends RecyclerView.Adapter<FitbitActivityA
 
     @Override
     public void onBindViewHolder(FitbitActivityViewHolder contactViewHolder, int i) {
-        FitbitActivityInfo2 fitbitActivity = fitbitActivityList.get(i);
+        FitbitActivityInfo fitbitActivity = fitbitActivityList.get(i);
         contactViewHolder.name.setText(fitbitActivity.name);
 
-        Map<String, Integer> drawables = FitbitActivityInfo2.getDrawables(context.getResources());
+        Map<String, Integer> drawables = FitbitActivityInfo.getDrawables(context.getResources());
         contactViewHolder.image.setImageResource(drawables.get(fitbitActivity.name));
     }
 
@@ -63,7 +63,7 @@ public class FitbitActivityAdapter2 extends RecyclerView.Adapter<FitbitActivityA
         @Override
         public void onClick(View v) {
             //Toast.makeText(v.getContext(), name.getText() +" clicked", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(v.getContext(), LogFitbitActivity2.class);
+            Intent intent = new Intent(v.getContext(), LogFitbitActivity.class);
             intent.putExtra("FitbitActivityName", name.getText());
             v.getContext().startActivity(intent);
         }

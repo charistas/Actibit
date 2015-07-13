@@ -40,7 +40,7 @@ import java.util.Map;
 import charistas.actibit.auth.AuthenticationActivity;
 import charistas.actibit.auth.FitbitApi;
 
-public class LogFitbitActivity2 extends ActionBarActivity implements View.OnClickListener, SetDurationDialogFragment.OnCompleteListener {
+public class LogFitbitActivity extends ActionBarActivity implements View.OnClickListener, SetDurationDialogFragment.OnCompleteListener {
     TextView [] myTextViews = null;
     EditText[] myEditTexts = null;
 
@@ -73,7 +73,7 @@ public class LogFitbitActivity2 extends ActionBarActivity implements View.OnClic
         durationFormatter = new SimpleDateFormat("kk 'hours' 'and' mm 'minutes'", Locale.US);
 
         context = this;
-        //Toast.makeText(this, "LogFitbitActivity2", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "LogFitbitActivity", Toast.LENGTH_SHORT).show();
 
         Bundle extras = getIntent().getExtras();
         String value = null;
@@ -82,8 +82,8 @@ public class LogFitbitActivity2 extends ActionBarActivity implements View.OnClic
             //Toast.makeText(this, "Received: " + value, Toast.LENGTH_SHORT).show();
         }
 
-        Map<String, String> ids = FitbitActivityInfo2.getActivityIDs();
-        Map<String, String []> parameters = FitbitActivityInfo2.getActivityParameters();
+        Map<String, String> ids = FitbitActivityInfo.getActivityIDs();
+        Map<String, String []> parameters = FitbitActivityInfo.getActivityParameters();
 
         String [] curParameters = parameters.get(value);
         int curLen = curParameters.length;
@@ -163,8 +163,8 @@ public class LogFitbitActivity2 extends ActionBarActivity implements View.OnClic
         String ACCESS_RAW_RESPONSE = prefs.getString("ACCESS_RAW_RESPONSE", null);
         final Token accessToken = new Token(ACCESS_TOKEN, ACCESS_SECRET, ACCESS_RAW_RESPONSE);
 
-        final Map<String, String> ids = FitbitActivityInfo2.getActivityIDs();
-        final Map<String, String[]> parameters = FitbitActivityInfo2.getActivityParameters();
+        final Map<String, String> ids = FitbitActivityInfo.getActivityIDs();
+        final Map<String, String[]> parameters = FitbitActivityInfo.getActivityParameters();
 
         final Handler handler = new Handler();
         // Network operation shouldn't run on main thread

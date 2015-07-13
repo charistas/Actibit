@@ -62,16 +62,16 @@ public class PickActivity extends ActionBarActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        FitbitActivityAdapter2 ca = new FitbitActivityAdapter2(this, createList());
+        FitbitActivityAdapter ca = new FitbitActivityAdapter(this, createList());
         recList.setAdapter(ca);
     }
 
-    private List<FitbitActivityInfo2> createList() {
-        Map<String, String> activities = FitbitActivityInfo2.getActivityIDs();
-        List<FitbitActivityInfo2> result = new ArrayList<>();
+    private List<FitbitActivityInfo> createList() {
+        Map<String, String> activities = FitbitActivityInfo.getActivityIDs();
+        List<FitbitActivityInfo> result = new ArrayList<>();
 
         for (String key : activities.keySet()) {
-            FitbitActivityInfo2 ci = new FitbitActivityInfo2();
+            FitbitActivityInfo ci = new FitbitActivityInfo();
             ci.name = key;
             result.add(ci);
         }
