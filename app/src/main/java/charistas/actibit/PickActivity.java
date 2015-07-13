@@ -21,6 +21,7 @@ import charistas.actibit.auth.AuthenticationActivity;
 public class PickActivity extends ActionBarActivity {
     private static Menu menu = null;
     private static boolean signedIn = false;
+    public static FitbitActivityAdapter ca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class PickActivity extends ActionBarActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
 
-        FitbitActivityAdapter ca = new FitbitActivityAdapter(this, createList());
+        ca = new FitbitActivityAdapter(this, createList());
         recList.setAdapter(ca);
     }
 
@@ -71,6 +72,10 @@ public class PickActivity extends ActionBarActivity {
         List<FitbitActivityInfo> result = new ArrayList<>();
 
         for (String key : activities.keySet()) {
+            // TODO: skip activities that are disabled - instead of skipping Tennis
+            /*if (key.equals("Tennis")) {
+                continue;
+            }*/
             FitbitActivityInfo ci = new FitbitActivityInfo();
             ci.name = key;
             result.add(ci);
@@ -83,6 +88,7 @@ public class PickActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_pick, menu);
+        setSignedInStatus(signedIn);
         return true;
     }
 
@@ -95,7 +101,9 @@ public class PickActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "Not yet implemented.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Not implemented yet.", Toast.LENGTH_LONG).show();
+            //Intent intent = new Intent(this, SettingsActivity.class);
+            //startActivity(intent);
             return true;
         }
         else if (id == R.id.action_feedback) {

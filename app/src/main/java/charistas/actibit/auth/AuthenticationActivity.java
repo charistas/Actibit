@@ -94,7 +94,6 @@ public class AuthenticationActivity extends Activity {
                             public void run() {
                                 Toast.makeText(context, "Signed in!", Toast.LENGTH_SHORT).show();
                                 PickActivity.setSignedInStatus(true);
-                                //PickActivity.setAuthStatus(true);
                             }
                         });
                     }

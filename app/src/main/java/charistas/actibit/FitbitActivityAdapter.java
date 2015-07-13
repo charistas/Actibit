@@ -13,13 +13,22 @@ import java.util.List;
 import java.util.Map;
 
 public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAdapter.FitbitActivityViewHolder> {
-    private static MyClickListener myClickListener;
     private List<FitbitActivityInfo> fitbitActivityList;
     private Context context;
 
     public FitbitActivityAdapter(Context context, List<FitbitActivityInfo> fitBitActivityList) {
         this.fitbitActivityList = fitBitActivityList;
         this.context = context;
+    }
+
+    public void removeItem(int position) {
+        fitbitActivityList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void addItem(String activityName) {
+        fitbitActivityList.add(new FitbitActivityInfo(activityName));
+        notifyDataSetChanged();
     }
 
     @Override

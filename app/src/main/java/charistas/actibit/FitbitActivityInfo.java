@@ -9,6 +9,27 @@ import java.util.Map;
 public class FitbitActivityInfo {
     protected String name;
 
+    FitbitActivityInfo() {
+
+    }
+
+    FitbitActivityInfo(String name) {
+        this.name = name;
+    }
+
+    public static String [] activityNames = new String[]{
+            "Tennis",
+            "Cycling",
+            "Cleaning",
+            "Cooking",
+            "Basketball",
+            "Billiard",
+            "Soccer",
+            "Yoga",
+            "Volleyball",
+            "Swimming"
+    };
+
     public static Map getActivityIDs() {
         Map ids = new LinkedHashMap();
 
