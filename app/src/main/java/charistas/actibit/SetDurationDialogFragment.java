@@ -24,26 +24,26 @@ public class SetDurationDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.fragment_duration_dialog, null);
 
-        final NumberPicker hp = (NumberPicker) v.findViewById(R.id.hourPicker);
-        final String [] hourPickerValues = new String[13];
+        final NumberPicker hourPicker = (NumberPicker) v.findViewById(R.id.hourPicker);
+        final String [] hourPickerValues = new String[24];
         hourPickerValues[0] = "0";
         for (int i = 1; i < hourPickerValues.length; i++) {
             hourPickerValues[i] = Integer.toString(i);
         }
-        hp.setMaxValue(23);
-        hp.setMinValue(0);
-        hp.setWrapSelectorWheel(false);
+        hourPicker.setMaxValue(23);
+        hourPicker.setMinValue(0);
+        hourPicker.setWrapSelectorWheel(false);
 
-        final NumberPicker mp = (NumberPicker) v.findViewById(R.id.minutePicker);
+        final NumberPicker minutePicker = (NumberPicker) v.findViewById(R.id.minutePicker);
         final String [] minutePickerValues = new String[13];
         minutePickerValues[0] = "0";
         for (int i = 1; i < minutePickerValues.length; i++) {
             minutePickerValues[i] = Integer.toString(5 * i);
         }
-        mp.setMinValue(0);
-        mp.setMaxValue(11);
-        mp.setDisplayedValues(minutePickerValues);
-        mp.setWrapSelectorWheel(false);
+        minutePicker.setMinValue(0);
+        minutePicker.setMaxValue(11);
+        minutePicker.setDisplayedValues(minutePickerValues);
+        minutePicker.setWrapSelectorWheel(false);
 
         builder.setTitle("Set Duration");
 
@@ -60,8 +60,8 @@ public class SetDurationDialogFragment extends DialogFragment {
         // Set positive and negative buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                String hours = hourPickerValues[hp.getValue()];
-                String minutes = minutePickerValues[mp.getValue()];
+                String hours = hourPickerValues[hourPicker.getValue()];
+                String minutes = minutePickerValues[minutePicker.getValue()];
                 mListener.onComplete(hours, minutes);
             }
         });

@@ -1,3 +1,10 @@
+/*
+ * TODO: Handle exceptions
+ * https://trivedihardik.wordpress.com/2011/08/20/how-to-avoid-force-close-error-in-android/
+ * http://stackoverflow.com/questions/16561692/android-exception-handling-best-practice
+ * http://stackoverflow.com/questions/19897628/need-to-handle-uncaught-exception-and-send-log-file
+ */
+
 package charistas.actibit;
 
 import android.app.AlertDialog;

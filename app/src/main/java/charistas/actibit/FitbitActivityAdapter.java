@@ -50,7 +50,7 @@ public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAd
                 from(viewGroup.getContext()).
                 inflate(R.layout.card_layout, viewGroup, false);
 
-        return new FitbitActivityViewHolder(context, itemView);
+        return new FitbitActivityViewHolder(itemView);
     }
 
     public static class FitbitActivityViewHolder extends RecyclerView.ViewHolder implements View
@@ -58,9 +58,8 @@ public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAd
 
         protected TextView name;
         protected ImageView image;
-        protected Context context;
 
-        public FitbitActivityViewHolder(Context context, View v) {
+        public FitbitActivityViewHolder(View v) {
             super(v);
 
             name =  (TextView)v.findViewById(R.id.txtName);

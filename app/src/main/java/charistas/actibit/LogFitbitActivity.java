@@ -179,21 +179,12 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
 
                 for (int i = 0; i < curParameters.length; i++) {
                     if (curParameters[i].equals("durationMillis")) {
-                        try {
-                            Date date = durationFormatter.parse(myEditTexts[i].getText().toString());
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(date);
-                            int hours = calendar.get(Calendar.HOUR_OF_DAY);
-                            int minutes = calendar.get(Calendar.MINUTE);
-                            int milliseconds = ((hours * 60) + minutes) * 60000;
-                            request.addBodyParameter(curParameters[i], Integer.toString(milliseconds));
-                        } catch (ParseException e) {
-                            /* TODO: Handle exceptions
-                             * https://trivedihardik.wordpress.com/2011/08/20/how-to-avoid-force-close-error-in-android/
-                             * http://stackoverflow.com/questions/16561692/android-exception-handling-best-practice
-                             * http://stackoverflow.com/questions/19897628/need-to-handle-uncaught-exception-and-send-log-file
-                             */
-                        }
+                        String durationText = myEditTexts[i].getText().toString();
+                        String [] result = durationText.split(" ");
+                        int hours = Integer.parseInt(result[0]);
+                        int minutes = Integer.parseInt(result[3]);
+                        int milliseconds = ((hours * 60) + minutes) * 60000;
+                        request.addBodyParameter(curParameters[i], Integer.toString(milliseconds));
                     }
                     else {
                         request.addBodyParameter(curParameters[i], myEditTexts[i].getText().toString());
@@ -259,10 +250,11 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
     }
 
     public void onComplete(String hours, String minutes) {
-        Calendar newDuration = Calendar.getInstance();
-        newDuration.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hours));
-        newDuration.set(Calendar.MINUTE, Integer.parseInt(minutes));
-        durationEditText.setText(durationFormatter.format(newDuration.getTime()));
-        //durationEditText.setText(hours + ":" + minutes);
+        if (hours == "1") {
+            durationEditText.setText(hours +" hour and " +minutes +" minutes");
+        }
+        else {
+            durationEditText.setText(hours +" hours and " +minutes +" minutes");
+        }
     }
 }
