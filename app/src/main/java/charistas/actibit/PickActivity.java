@@ -4,15 +4,21 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +145,7 @@ public class PickActivity extends ActionBarActivity {
     public void sendFeedback() {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"haritasi@gmail.com"});
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"haritasi@gmail.com"});
         i.putExtra(Intent.EXTRA_SUBJECT, "Feedback on ActiBit app");
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
@@ -160,4 +166,6 @@ public class PickActivity extends ActionBarActivity {
             }
         }
     }
+
+
 }
