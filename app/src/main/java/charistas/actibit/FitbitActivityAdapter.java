@@ -2,12 +2,14 @@ package charistas.actibit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
@@ -71,7 +73,14 @@ public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAd
 
         @Override
         public void onClick(View v) {
-            //Toast.makeText(v.getContext(), name.getText() +" clicked", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences prefs = v.getContext().getSharedPreferences("charistas.actibit", v.getContext().MODE_PRIVATE);
+            String access_token = prefs.getString("ACCESS_TOKEN", null);
+            if (access_token == null) {
+                Toast.makeText(v.getContext(), "You have to sign in first.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Intent intent = new Intent(v.getContext(), LogFitbitActivity.class);
             intent.putExtra("FitbitActivityName", name.getText());
             v.getContext().startActivity(intent);

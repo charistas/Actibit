@@ -1,6 +1,7 @@
 package charistas.actibit;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -22,12 +23,15 @@ public class PickActivity extends ActionBarActivity {
     private static Menu menu = null;
     private static boolean signedIn = false;
     public static FitbitActivityAdapter ca;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick);
         setTitle(R.string.title_activity_pick);
+
+        context = this;
 
         SharedPreferences prefs = getSharedPreferences("charistas.actibit", MODE_PRIVATE);
         String access_token = prefs.getString("ACCESS_TOKEN", null);

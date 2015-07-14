@@ -17,7 +17,6 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class SettingsActivity extends ActionBarActivity {
     static Context context;
     static SharedPreferences.OnSharedPreferenceChangeListener listener;
