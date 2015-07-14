@@ -27,12 +27,14 @@
         <activity
             android:name=".LogFitbitActivity"
             android:label="@string/title_activity_log_fit_bit"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".PickActivity">
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".PickActivity">
         </activity>
     </application>
 

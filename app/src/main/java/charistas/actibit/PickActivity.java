@@ -70,12 +70,13 @@ public class PickActivity extends ActionBarActivity {
     private List<FitbitActivityInfo> createList() {
         Map<String, String> activities = FitbitActivityInfo.getActivityIDs();
         List<FitbitActivityInfo> result = new ArrayList<>();
+        SharedPreferences prefs = getSharedPreferences("charistas.actibit", MODE_PRIVATE);
 
         for (String key : activities.keySet()) {
-            // TODO: skip activities that are disabled - instead of skipping Tennis
-            /*if (key.equals("Tennis")) {
+            boolean activityEnabledStatus = prefs.getBoolean(key, true);
+            if (activityEnabledStatus == false) {
                 continue;
-            }*/
+            }
             FitbitActivityInfo ci = new FitbitActivityInfo();
             ci.name = key;
             result.add(ci);
@@ -101,9 +102,9 @@ public class PickActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "Not implemented yet.", Toast.LENGTH_LONG).show();
-            //Intent intent = new Intent(this, SettingsActivity.class);
-            //startActivity(intent);
+            //Toast.makeText(this, "Not implemented yet.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
         else if (id == R.id.action_feedback) {
@@ -115,7 +116,9 @@ public class PickActivity extends ActionBarActivity {
                 // Sign Out
                 setSignedInStatus(false);
                 SharedPreferences.Editor editor = getSharedPreferences("charistas.actibit", MODE_PRIVATE).edit();
-                editor.clear();
+                editor.remove("ACCESS_TOKEN");
+                editor.remove("ACCESS_SECRET");
+                editor.remove("ACCESS_RAW_RESPONSE");
                 editor.commit();
                 Toast.makeText(this, "You may sign in later via the menu.", Toast.LENGTH_LONG).show();
             }

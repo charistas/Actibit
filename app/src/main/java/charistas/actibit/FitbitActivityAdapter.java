@@ -22,13 +22,13 @@ public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAd
     }
 
     public void removeItem(int position) {
-        fitbitActivityList.remove(position);
-        notifyItemRemoved(position);
+        //fitbitActivityList.remove(position);
+        //notifyDataSetChanged();
     }
 
     public void addItem(String activityName) {
-        fitbitActivityList.add(new FitbitActivityInfo(activityName));
-        notifyDataSetChanged();
+        //fitbitActivityList.add(new FitbitActivityInfo(activityName));
+        //notifyDataSetChanged();
     }
 
     @Override
