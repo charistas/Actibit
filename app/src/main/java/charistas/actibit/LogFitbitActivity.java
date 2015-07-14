@@ -11,8 +11,6 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,10 +27,8 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -40,7 +36,7 @@ import java.util.Map;
 import charistas.actibit.auth.AuthenticationActivity;
 import charistas.actibit.auth.FitbitApi;
 
-public class LogFitbitActivity extends ActionBarActivity implements View.OnClickListener, SetDurationDialogFragment.OnCompleteListener {
+public class LogFitbitActivity extends ActionBarActivity implements View.OnClickListener, SetDurationDialogFragment.OnDurationCompleteListener, SetDistanceDialogFragment.onDistanceDialogComplete {
     TextView [] myTextViews = null;
     EditText[] myEditTexts = null;
 
@@ -54,6 +50,7 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
     EditText dateEditText;
     EditText timeEditText;
     EditText durationEditText;
+    EditText distanceEditText;
 
     Context context;
 
@@ -131,6 +128,11 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
                 rowEditText.setInputType(InputType.TYPE_NULL);
                 durationEditText = rowEditText;
             }
+            else if (curParameters[i].equals("distance")) {
+                rowEditText.setOnClickListener(this);
+                rowEditText.setInputType(InputType.TYPE_NULL);
+                distanceEditText = rowEditText;
+            }
 
             myLinearLayout.addView(rowTextView);
             myLinearLayout.addView(rowEditText);
@@ -186,6 +188,11 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
                         int milliseconds = ((hours * 60) + minutes) * 60000;
                         request.addBodyParameter(curParameters[i], Integer.toString(milliseconds));
                     }
+                    else if (curParameters[i].equals("distance")) {
+                        String distanceText = myEditTexts[i].getText().toString();
+                        String [] result = distanceText.split(" ");
+                        request.addBodyParameter(curParameters[i], result[0]);
+                    }
                     else {
                         request.addBodyParameter(curParameters[i], myEditTexts[i].getText().toString());
                     }
@@ -231,6 +238,9 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
         else if (view == durationEditText) {
             showDurationDialogFragment();
         }
+        else if (view == distanceEditText) {
+            showDistanceDialogFragment();
+        }
     }
 
     void showDurationDialogFragment() {
@@ -249,6 +259,17 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
         newFragment.show(ft, "dialog");
     }
 
+    void showDistanceDialogFragment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        DialogFragment newFragment = SetDistanceDialogFragment.newInstance();
+        newFragment.show(ft, "dialog");
+    }
+
     public void onComplete(String hours, String minutes) {
         if (hours == "1") {
             durationEditText.setText(hours +" hour and " +minutes +" minutes");
@@ -256,5 +277,9 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
         else {
             durationEditText.setText(hours +" hours and " +minutes +" minutes");
         }
+    }
+
+    public void onDistanceDialogComplete(String distance) {
+        distanceEditText.setText(distance +" km");
     }
 }

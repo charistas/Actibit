@@ -62,7 +62,7 @@ public class SetDurationDialogFragment extends DialogFragment {
             public void onClick(DialogInterface dialog, int id) {
                 String hours = hourPickerValues[hourPicker.getValue()];
                 String minutes = minutePickerValues[minutePicker.getValue()];
-                mListener.onComplete(hours, minutes);
+                durationListener.onComplete(hours, minutes);
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -79,16 +79,16 @@ public class SetDurationDialogFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            this.mListener = (OnCompleteListener)activity;
+            this.durationListener = (OnDurationCompleteListener)activity;
         }
         catch (final ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
+            throw new ClassCastException(activity.toString() + " must implement OnDurationCompleteListener");
         }
     }
 
-    public  interface OnCompleteListener {
+    public  interface OnDurationCompleteListener {
         void onComplete(String hours, String minutes);
     }
 
-    private OnCompleteListener mListener;
+    private OnDurationCompleteListener durationListener;
 }
