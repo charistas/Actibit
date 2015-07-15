@@ -61,7 +61,7 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
 
         Map<String, String> labels = new HashMap();
         labels.put("date", "Date");
-        labels.put("startTime", "Start Time");
+        labels.put("startTime", "Start time");
         labels.put("durationMillis", "Duration");
         labels.put("distance", "Distance");
 
@@ -73,16 +73,16 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
         //Toast.makeText(this, "LogFitbitActivity", Toast.LENGTH_SHORT).show();
 
         Bundle extras = getIntent().getExtras();
-        String value = null;
+        String activityName = null;
         if (extras != null) {
-            value = extras.getString("FitbitActivityName");
-            //Toast.makeText(this, "Received: " + value, Toast.LENGTH_SHORT).show();
+            activityName = extras.getString("FitbitActivityName");
+            //Toast.makeText(this, "Received: " + activityName, Toast.LENGTH_SHORT).show();
         }
 
         Map<String, String> ids = FitbitActivityInfo.getActivityIDs();
         Map<String, String []> parameters = FitbitActivityInfo.getActivityParameters();
 
-        String [] curParameters = parameters.get(value);
+        String [] curParameters = parameters.get(activityName);
         int curLen = curParameters.length;
         myTextViews = new TextView[curLen];
         myEditTexts = new EditText[curLen];
@@ -141,7 +141,7 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
             myEditTexts[i] = rowEditText;
         }
 
-        final String chosenActivity = value;
+        final String chosenActivity = activityName;
         final String [] chosenActivityParameters = new String[myEditTexts.length];
         for (int i = 0; i < myEditTexts.length; i++) {
             chosenActivityParameters[i] = myEditTexts[i].getText().toString();

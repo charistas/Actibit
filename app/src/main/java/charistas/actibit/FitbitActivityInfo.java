@@ -9,40 +9,32 @@ import java.util.Map;
 public class FitbitActivityInfo {
     protected String name;
 
-    FitbitActivityInfo() {
-
-    }
-
-    FitbitActivityInfo(String name) {
-        this.name = name;
-    }
-
     public static String [] activityNames = new String[]{
-            "Tennis",
-            "Cycling",
-            "Cleaning",
-            "Cooking",
             "Basketball",
             "Billiard",
+            "Cleaning",
+            "Cycling",
+            "Cooking",
             "Soccer",
-            "Yoga",
+            "Swimming",
+            "Tennis",
             "Volleyball",
-            "Swimming"
+            "Yoga"
     };
 
     public static Map getActivityIDs() {
         Map ids = new LinkedHashMap();
 
-        ids.put("Tennis", "15675");
-        ids.put("Cycling", "90001");
-        ids.put("Cleaning", "5020");
-        ids.put("Cooking", "5052");
         ids.put("Basketball", "15040");
         ids.put("Billiard", "15080");
+        ids.put("Cleaning", "5020");
+        ids.put("Cooking", "5052");
+        ids.put("Cycling", "90001");
         ids.put("Soccer", "15605");
-        ids.put("Yoga", "52001");
-        ids.put("Volleyball", "15711");
         ids.put("Swimming", "18310");
+        ids.put("Tennis", "15675");
+        ids.put("Volleyball", "15711");
+        ids.put("Yoga", "52001");
 
         return ids;
     }

@@ -167,9 +167,9 @@ public class PickActivity extends ActionBarActivity {
         if (menu != null) {
             MenuItem item = menu.findItem(R.id.action_sign_in);
             if (status) {
-                item.setTitle("Sign Out");
+                item.setTitle(context.getResources().getString(R.string.action_sign_out));
             } else {
-                item.setTitle("Sign In");
+                item.setTitle(context.getResources().getString(R.string.action_sign_in));
             }
         }
     }
