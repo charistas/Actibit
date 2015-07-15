@@ -65,7 +65,7 @@ public class SetDurationDialogFragment extends DialogFragment {
                 durationListener.onComplete(hours, minutes);
             }
         });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
             }

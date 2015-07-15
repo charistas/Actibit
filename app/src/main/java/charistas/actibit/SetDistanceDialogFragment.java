@@ -44,7 +44,7 @@ public class SetDistanceDialogFragment extends DialogFragment {
                 distanceListener.onDistanceDialogComplete(distance);
             }
         });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
             }
