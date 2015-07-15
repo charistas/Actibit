@@ -152,6 +152,12 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
         myButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                for (EditText et : myEditTexts) {
+                    if (et.getText().toString().equals("")) {
+                        Toast.makeText(context,"Missing parameters.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
                 postData(chosenActivity);
             }
         });
