@@ -74,7 +74,7 @@ public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAd
             SharedPreferences prefs = v.getContext().getSharedPreferences("charistas.actibit", v.getContext().MODE_PRIVATE);
             String access_token = prefs.getString("ACCESS_TOKEN", null);
             if (access_token == null) {
-                Toast.makeText(v.getContext(), "You have to sign in first.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "You have to sign in first", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -87,7 +87,7 @@ public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAd
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(v.getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(v.getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
                             }
                         });
                         return;
@@ -115,7 +115,7 @@ public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAd
                 Log.e("PickActivity", "Error checking internet connection", e);
             }
         } else {
-            Log.d("PickActivity", "No network available!");
+            Log.d("PickActivity", "No network available");
         }
         return false;
     }

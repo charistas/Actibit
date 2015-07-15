@@ -45,7 +45,7 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
 
     SimpleDateFormat dateFormatter;
     SimpleDateFormat timeFormatter;
-    SimpleDateFormat durationFormatter;
+    //SimpleDateFormat durationFormatter;
 
     EditText dateEditText;
     EditText timeEditText;
@@ -67,7 +67,7 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
 
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         timeFormatter = new SimpleDateFormat("kk:mm", Locale.US);
-        durationFormatter = new SimpleDateFormat("kk 'hours' 'and' mm 'minutes'", Locale.US);
+        //durationFormatter = new SimpleDateFormat("kk 'hours' 'and' mm 'minutes'", Locale.US);
 
         context = this;
         //Toast.makeText(this, "LogFitbitActivity", Toast.LENGTH_SHORT).show();
@@ -148,13 +148,13 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
         }
 
         Button myButton = new Button(this);
-        myButton.setText("Ok");
+        myButton.setText("Done");
         myButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 for (EditText et : myEditTexts) {
                     if (et.getText().toString().equals("")) {
-                        Toast.makeText(context,"Missing parameters.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Missing parameters", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -212,19 +212,19 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
                     @Override
                     public void run() {
                         if ( (response.getCode() == 201) || (response.getCode() == 200) ) {
-                            Toast.makeText(context, "Sent!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Sent", Toast.LENGTH_LONG).show();
                         }
                         else if (response.getCode() == 401) {
-                            Toast.makeText(context, "Authentication needed!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Authentication needed", Toast.LENGTH_LONG).show();
                         }
                         else if (response.getCode() == 500) {
-                            Toast.makeText(context, "Something is wrong at Fitbit! Try your request later.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Something is wrong at Fitbit, try your request later", Toast.LENGTH_LONG).show();
                         }
                         else if (response.getCode()  == 502) {
-                            Toast.makeText(context, "Fitbit will be back soon. Maintenance!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Fitbit will be back soon, maintenance", Toast.LENGTH_LONG).show();
                         }
                         else {
-                            Toast.makeText(context, "Unknown error. Message: " +response.getMessage() +" | Code: " +response.getCode(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Unknown error: " +response.getMessage() +" | Code: " +response.getCode(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

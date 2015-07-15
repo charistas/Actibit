@@ -51,19 +51,19 @@ public class PickActivity extends ActionBarActivity {
         if (access_token == null) {
             setSignedInStatus(false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Let's get you sign in with your Fitbit account.")
+            builder.setMessage("Let's sign in with your Fitbit account")
                     .setCancelable(false)
-                    .setPositiveButton("Sign In", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Sign in", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Start authentication process
                             Intent intent = new Intent(PickActivity.this, AuthenticationActivity.class);
                             PickActivity.this.startActivity(intent);
                         }
                     })
-                    .setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("Not now", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Let the user know how he can sign in later
-                            Toast.makeText(PickActivity.this, "You may sign in later via the menu.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PickActivity.this, "You may sign in later via the menu", Toast.LENGTH_LONG).show();
 
                         }
                     });
@@ -137,7 +137,7 @@ public class PickActivity extends ActionBarActivity {
                 editor.remove("ACCESS_SECRET");
                 editor.remove("ACCESS_RAW_RESPONSE");
                 editor.commit();
-                Toast.makeText(this, "You may sign in later via the menu.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "You may sign in later via the menu", Toast.LENGTH_LONG).show();
             }
             else {
                 // Sign In
@@ -153,11 +153,11 @@ public class PickActivity extends ActionBarActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{"haritasi@gmail.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Feedback on ActiBit app");
+        i.putExtra(Intent.EXTRA_SUBJECT, "Feedback on Actibit app");
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "There are no email clients installed", Toast.LENGTH_LONG).show();
         }
     }
 

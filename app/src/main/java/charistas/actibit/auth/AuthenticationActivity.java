@@ -92,7 +92,7 @@ public class AuthenticationActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(context, "Signed in!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Signed in", Toast.LENGTH_SHORT).show();
                                 PickActivity.setSignedInStatus(true);
                             }
                         });
