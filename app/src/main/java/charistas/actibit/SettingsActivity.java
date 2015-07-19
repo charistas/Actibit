@@ -3,19 +3,11 @@ package charistas.actibit;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class SettingsActivity extends ActionBarActivity {
     static Context context;

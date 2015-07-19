@@ -8,8 +8,8 @@ android {
         applicationId "charistas.actibit"
         minSdkVersion 21
         targetSdkVersion 22
-        versionCode 8
-        versionName "0.92"
+        versionCode 10
+        versionName "0.9.6"
     }
     buildTypes {
         release {

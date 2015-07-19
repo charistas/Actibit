@@ -11,21 +11,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,17 +79,18 @@ public class PickActivity extends ActionBarActivity {
     }
 
     private List<FitbitActivityInfo> createList() {
-        Map<String, String> activities = FitbitActivityInfo.getActivityIDs();
-        List<FitbitActivityInfo> result = new ArrayList<>();
         SharedPreferences prefs = getSharedPreferences("charistas.actibit", MODE_PRIVATE);
+        Map<String, String> activities = FitbitActivityInfo.getActivityIDs(prefs);
+        List<FitbitActivityInfo> result = new ArrayList<>();
 
-        for (String key : activities.keySet()) {
-            boolean activityEnabledStatus = prefs.getBoolean(key, true);
+        // Create list
+        for (String activityName : activities.keySet()) {
+            boolean activityEnabledStatus = prefs.getBoolean(activityName, true);
             if (activityEnabledStatus == false) {
                 continue;
             }
             FitbitActivityInfo ci = new FitbitActivityInfo();
-            ci.name = key;
+            ci.name = activityName;
             result.add(ci);
         }
         return result;

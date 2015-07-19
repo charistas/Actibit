@@ -79,7 +79,7 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
             //Toast.makeText(this, "Received: " + activityName, Toast.LENGTH_SHORT).show();
         }
 
-        Map<String, String> ids = FitbitActivityInfo.getActivityIDs();
+        //Map<String, String> ids = FitbitActivityInfo.getActivityIDs();
         Map<String, String []> parameters = FitbitActivityInfo.getActivityParameters();
 
         String [] curParameters = parameters.get(activityName);
@@ -166,12 +166,17 @@ public class LogFitbitActivity extends ActionBarActivity implements View.OnClick
 
     public void postData(final String activityName) {
         SharedPreferences prefs = getSharedPreferences("charistas.actibit", MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(activityName +"_timesUsed", prefs.getInt(activityName +"_timesUsed", 0) + 1);
+        editor.commit();
+
         String ACCESS_TOKEN = prefs.getString("ACCESS_TOKEN", null);
         String ACCESS_SECRET = prefs.getString("ACCESS_SECRET", null);
         String ACCESS_RAW_RESPONSE = prefs.getString("ACCESS_RAW_RESPONSE", null);
         final Token accessToken = new Token(ACCESS_TOKEN, ACCESS_SECRET, ACCESS_RAW_RESPONSE);
 
-        final Map<String, String> ids = FitbitActivityInfo.getActivityIDs();
+        final Map<String, String> ids = FitbitActivityInfo.getActivityIDs(prefs);
         final Map<String, String[]> parameters = FitbitActivityInfo.getActivityParameters();
 
         final Handler handler = new Handler();

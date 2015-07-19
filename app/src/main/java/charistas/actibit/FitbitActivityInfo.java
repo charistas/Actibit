@@ -1,20 +1,25 @@
 package charistas.actibit;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FitbitActivityInfo {
     protected String name;
 
-    public static String [] activityNames = new String[]{
+    public static String [] activityNames = new String[] {
             "Basketball",
             "Billiard",
             "Cleaning",
-            "Cycling",
             "Cooking",
+            "Cycling",
             "Soccer",
             "Swimming",
             "Tennis",
@@ -22,10 +27,44 @@ public class FitbitActivityInfo {
             "Yoga"
     };
 
-    public static Map getActivityIDs() {
-        Map ids = new LinkedHashMap();
+    public static String [] activityIDs = new String[] {
+            "15040",
+            "15080",
+            "5020",
+            "5052",
+            "90001",
+            "15605",
+            "18310",
+            "15675",
+            "15711",
+            "52001"
+    };
 
-        ids.put("Basketball", "15040");
+    public static Map getActivityIDs(SharedPreferences prefs) {
+        int [] timesUsed = new int[activityNames.length];
+        List<Info> activities = new ArrayList<>();
+
+        // Create list
+        for (int i = 0; i < activityNames.length; i++) {
+            timesUsed[i] = prefs.getInt(activityNames[i] +"_timesUsed", 0);
+            activities.add(new Info(activityNames[i], activityIDs[i], timesUsed[i]));
+        }
+
+        // Sort list
+        Collections.sort(activities, new Comparator<Info>() {
+            @Override
+            public int compare(Info i1, Info i2) {
+                return i2.timesUsed - i1.timesUsed; // Descending
+            }
+        });
+
+        // Create map
+        Map ids = new LinkedHashMap();
+        for (Info activity : activities) {
+            ids.put(activity.name, activity.id);
+        }
+
+        /*ids.put("Basketball", "15040");
         ids.put("Billiard", "15080");
         ids.put("Cleaning", "5020");
         ids.put("Cooking", "5052");
@@ -34,7 +73,7 @@ public class FitbitActivityInfo {
         ids.put("Swimming", "18310");
         ids.put("Tennis", "15675");
         ids.put("Volleyball", "15711");
-        ids.put("Yoga", "52001");
+        ids.put("Yoga", "52001");*/
 
         return ids;
     }
