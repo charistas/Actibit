@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,108 +21,152 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAdapter.FitbitActivityViewHolder> {
-    private List<FitbitActivityInfo> fitbitActivityList;
-    private static Context context;
+import charistas.actibit.api.QuickPreferences;
 
-    public FitbitActivityAdapter(Context context, List<FitbitActivityInfo> fitBitActivityList) {
+/**
+ * This class is responsible for handling and displaying the Fitbit activities.
+ */
+class FitbitActivityAdapter extends RecyclerView.Adapter<FitbitActivityAdapter.FitbitActivityViewHolder> {
+    private List<FitbitActivity> fitbitActivityList;
+
+    /**
+     * A simple constructor for this class.
+     * @param fitBitActivityList The Fitbit activity list that will be displayed inside this adapter
+     */
+    FitbitActivityAdapter(List<FitbitActivity> fitBitActivityList) {
         this.fitbitActivityList = fitBitActivityList;
-        this.context = context;
     }
 
+    /**
+     * Returns the total number of the FItbit activities that will be displayed.
+     * @return Sum
+     */
     @Override
     public int getItemCount() {
         return fitbitActivityList.size();
     }
 
+    /**
+     * Responsible for displaying the appropriate image for each Fitbit activity.
+     * @param contactViewHolder This is where the activities exist
+     * @param i The position of the current Fitbit activity
+     */
     @Override
     public void onBindViewHolder(FitbitActivityViewHolder contactViewHolder, int i) {
-        FitbitActivityInfo fitbitActivity = fitbitActivityList.get(i);
-        contactViewHolder.name.setText(fitbitActivity.name);
+        FitbitActivity fitbitActivity = fitbitActivityList.get(i);
+        contactViewHolder.name.setText(fitbitActivity.getName());
 
-        Map<String, Integer> drawables = FitbitActivityInfo.getDrawables(context.getResources());
-        contactViewHolder.image.setImageResource(drawables.get(fitbitActivity.name));
+        Map<String, Integer> drawables = FitbitActivity.getDrawables(contactViewHolder.itemView.getContext().getResources());
+        contactViewHolder.image.setImageResource(drawables.get(fitbitActivity.getName()));
     }
 
+    /**
+     * Creates a new ViewHolder that will contain all the Fitbit activities.
+     * @param viewGroup The ViewGroup into which the new view will be added
+     * @param i The view type of the new view
+     * @return A new ViewHolder that holds the view of the given type
+     */
     @Override
     public FitbitActivityViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
-        final View itemView = LayoutInflater.
-                from(viewGroup.getContext()).
-                inflate(R.layout.card_layout, viewGroup, false);
-
+        final View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_layout, viewGroup, false);
         return new FitbitActivityViewHolder(itemView);
     }
 
-    public static class FitbitActivityViewHolder extends RecyclerView.ViewHolder implements View
-            .OnClickListener {
-
+    /**
+     * This is where all of the enabled Fitbit activities will be kept.
+     */
+    static class FitbitActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView name;
-        protected ImageView image;
+        ImageView image;
 
-        public FitbitActivityViewHolder(View v) {
-            super(v);
+        /**
+         * A simple constructor for this class.
+         * @param view The current view
+         */
+        FitbitActivityViewHolder(View view) {
+            super(view);
 
-            name =  (TextView)v.findViewById(R.id.txtName);
-            image = (ImageView)v.findViewById(R.id.image);
+            name =  (TextView)view.findViewById(R.id.txtName);
+            image = (ImageView)view.findViewById(R.id.image);
 
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * Handles the actions needed to be done after the user clicks on an image that represents
+         * an activity. After we confirm that there is an active Internet connection available, we
+         * proceed with launching the appropriate activity, LogFitbitActivity in that case.
+         * @param view The View that the user clicked on
+         */
         @Override
-        public void onClick(final View v) {
+        public void onClick(final View view) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+            boolean haveToken = prefs.getBoolean(QuickPreferences.HAVE_AUTHORIZATION, false);
 
-            SharedPreferences prefs = v.getContext().getSharedPreferences("charistas.actibit", v.getContext().MODE_PRIVATE);
-            String access_token = prefs.getString("ACCESS_TOKEN", null);
-            if (access_token == null) {
-                Toast.makeText(v.getContext(), "You have to sign in first", Toast.LENGTH_SHORT).show();
+            // If the user hasn't signed-in, prompt him to do so.
+            if (!haveToken) {
+                Toast.makeText(view.getContext(), view.getContext().getString(R.string.you_have_to_sign_in), Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // We need to check if there's an active Internet connection available. In order to do
+            // so, we have to use a new Thread, as we cannot perform network operations inside the
+            // UI thread.
             final Handler handler = new Handler();
-            new Thread(new Runnable() {
-                public void run() {
-                    boolean internetStatus = FitbitActivityAdapter.hasActiveInternetConnection();
-                    if (!internetStatus) {
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(v.getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+            new Thread(
+                    new Runnable() {
+                        public void run() {
+                            boolean internetStatus = hasActiveInternetConnection(view.getContext());
+                            if (!internetStatus) {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(view.getContext(), view.getContext().getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-                        });
-                        return;
-                    }
-                    else {
-                        Intent intent = new Intent(v.getContext(), LogFitbitActivity.class);
-                        intent.putExtra("FitbitActivityName", name.getText());
-                        v.getContext().startActivity(intent);
-                    }
-                }
+                            else {
+                                Intent intent = new Intent(view.getContext(), LogFitbitActivity.class);
+                                intent.putExtra("FitbitActivityName", name.getText());
+                                view.getContext().startActivity(intent);
+                            }
+                        }
+
+
             }).start();
         }
-    }
 
-    public static boolean hasActiveInternetConnection() {
-        if (isNetworkAvailable()) {
-            try {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1500);
-                urlc.connect();
-                return (urlc.getResponseCode() == 200);
-            } catch (IOException e) {
-                Log.e("PickActivity", "Error checking internet connection", e);
+        /**
+         * Using a random website, www.google.com in this case, to test the device's Internet connection
+         * @return True if a working Internet connection exists, false otherwise
+         */
+        private boolean hasActiveInternetConnection(Context context) {
+            if (isNetworkAvailable(context)) {
+                try {
+                    HttpURLConnection connection = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
+                    connection.setRequestProperty("User-Agent", "Test");
+                    connection.setRequestProperty("Connection", "close");
+                    connection.setConnectTimeout(1500);
+                    connection.connect();
+                    return (connection.getResponseCode() == 200);
+                } catch (IOException e) {
+                    Toast.makeText(context, context.getString(R.string.error_internet), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Log.d("PickActivity", "No network available");
+            return false;
         }
-        return false;
-    }
 
-    public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) PickActivity.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
+        /**
+         * Checks whether there is an active data network available
+         * @param context The context to use
+         * @return True if there's an active data network available, false otherwise
+         */
+        private boolean isNetworkAvailable(Context context) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null;
+        }
     }
 }
